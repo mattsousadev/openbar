@@ -15,3 +15,10 @@ def no_fields_response():
         , message=module_constant.DEFAULT_MESSAGE_RESPONSE_NO_FIELDS
         , data=None
     )
+
+def any_required_fields_empty_response():
+    return module_response.Response(
+        success=False
+        , message=module_constant.DEFAULT_MESSAGE_RESPONSE_SOME_REQUIRED_FIELDS_EMPTY
+        , data=None
+    )
