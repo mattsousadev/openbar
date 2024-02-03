@@ -37,3 +37,12 @@ def test_check_import_word_adapter_is_beign_called():
     request = module_request.Request(body={'file_dir':'any_file_dir'})
     sut.handle(request=request)
     import_words_adapter.adapt.assert_called_once_with(request=request)
+
+def test_handle_exception_when_import_word_adapter_throws():
+    import_words_adapter = mock.MagicMock()
+    import_words_adapter.adapt.side_effect = Exception('any_error')
+    sut_types = get_sut_types(adapter=import_words_adapter)
+    sut = sut_types.sut
+    request = module_request.Request(body={'file_dir':'any_file_dir'})
+    response = sut.handle(request=request)
+    assert response == module_helper_response.generic_error_response()
