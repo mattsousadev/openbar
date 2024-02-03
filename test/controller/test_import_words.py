@@ -3,7 +3,7 @@ import src.controller.import_words as module_controller_import_words
 import src.entities.model.http.request as module_request
 import src.entities.model.controller.import_words as module_model_import_words
 import src.entities.adapter.import_words as module_adapter_import_words
-import src.business.import_words as module_business_import_words
+import src.usecase.import_words as module_usecase_import_words
 import src.util.helper.response as module_helper_response
 
 class SutTypes:
@@ -13,9 +13,9 @@ class SutTypes:
 
 def get_sut_types(
         adapter:module_adapter_import_words.ImportWordsAdapter=module_adapter_import_words.ImportWordsAdapter(),
-        business=module_business_import_words.ImportWordsBusiness
+        usecase=module_usecase_import_words.ImportWordsUsecase
     ):
-    sut = module_controller_import_words.ImportWordsController(adapter=adapter,business=business)
+    sut = module_controller_import_words.ImportWordsController(adapter=adapter,usecase=usecase)
     return SutTypes(sut=sut, adapter=adapter)
 
 def test_request_is_null():
@@ -53,21 +53,21 @@ def test_handle_exception_when_import_word_adapter_throws():
     response = sut.handle(request=request)
     assert response == module_helper_response.generic_error_response()
 
-def test_check_import_word_business_is_beign_called():
-    import_words_business = mock.MagicMock()
-    sut_types = get_sut_types(business=import_words_business)
+def test_check_import_word_usecase_is_beign_called():
+    import_words_usecase = mock.MagicMock()
+    sut_types = get_sut_types(usecase=import_words_usecase)
     sut = sut_types.sut
     expected = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
     request = module_request.Request(body={'file_dir':'any_file_dir'})
     sut.handle(request=request)
-    import_words_business.import_words.assert_called_once_with(expected)
+    import_words_usecase.import_words.assert_called_once_with(expected)
 
-def test_handle_exception_when_import_word_business_throws():
+def test_handle_exception_when_import_word_usecase_throws():
     adapter = mock.MagicMock()
-    business = mock.MagicMock()
+    usecase = mock.MagicMock()
     adapter.return_value.adapt.return_value = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
-    business.import_words.side_effect = Exception('any_error')
-    sut_types = get_sut_types(adapter=adapter, business=business)
+    usecase.import_words.side_effect = Exception('any_error')
+    sut_types = get_sut_types(adapter=adapter, usecase=usecase)
     sut = sut_types.sut
     request = module_request.Request(body={'file_dir':'any_file_dir'})
     response = sut.handle(request=request)
