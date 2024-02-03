@@ -1,4 +1,4 @@
-import src.model.http.response as module_response
+import src.entities.model.http.response as module_response
 
 import src.util.constant as module_constant
 

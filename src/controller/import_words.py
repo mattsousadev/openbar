@@ -1,7 +1,7 @@
 import src.controller.base as module_base_controller
 
-import src.model.http.request as module_request
-import src.model.http.response as module_response
+import src.entities.model.http.request as module_request
+import src.entities.model.http.response as module_response
 import src.util.helper.response as module_helper_response
 import src.entities.adapter.import_words as module_adapter_import_words
 

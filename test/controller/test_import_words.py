@@ -1,6 +1,6 @@
 from src.controller.import_words import ImportWordsController
 import unittest.mock as mock
-import src.model.http.request as module_request
+import src.entities.model.http.request as module_request
 import src.entities.adapter.import_words as module_adapter_import_words
 import src.util.helper.response as module_helper_response
 class SutTypes:
@@ -30,7 +30,7 @@ def test_request_any_required_fields_are_empty():
     response = sut.handle(request=module_request.Request(body={'file_dir':None}))
     assert response == module_helper_response.any_required_fields_empty_response()
 
-def test_check_parameter_builder_is_beign_called():
+def test_check_import_word_adapter_is_beign_called():
     import_words_adapter = mock.MagicMock()
     sut_types = get_sut_types(adapter=import_words_adapter)
     sut = sut_types.sut
