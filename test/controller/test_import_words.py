@@ -1,6 +1,7 @@
 from src.controller.import_words import ImportWordsController
 import unittest.mock as mock
 import src.entities.model.http.request as module_request
+import src.entities.model.controller.import_words as module_controller_import_words
 import src.entities.adapter.import_words as module_adapter_import_words
 import src.util.helper.response as module_helper_response
 class SutTypes:
@@ -8,8 +9,11 @@ class SutTypes:
         self.sut = sut
         self.adapter = adapter
 
-def get_sut_types(adapter:module_adapter_import_words.ImportWordsAdapter=module_adapter_import_words.ImportWordsAdapter()):
-    sut = ImportWordsController(adapter=adapter)
+def get_sut_types(
+        adapter:module_adapter_import_words.ImportWordsAdapter=module_adapter_import_words.ImportWordsAdapter(),
+        business=None
+    ):
+    sut = ImportWordsController(adapter=adapter,business=business)
     return SutTypes(sut=sut, adapter=adapter)
 
 def test_request_is_null():
@@ -46,3 +50,12 @@ def test_handle_exception_when_import_word_adapter_throws():
     request = module_request.Request(body={'file_dir':'any_file_dir'})
     response = sut.handle(request=request)
     assert response == module_helper_response.generic_error_response()
+
+def test_check_import_word_business_is_beign_called():
+    import_words_business = mock.MagicMock()
+    sut_types = get_sut_types(business=import_words_business)
+    sut = sut_types.sut
+    expected = module_controller_import_words.ImportWordsRequest(file_dir='any_file_dir')
+    request = module_request.Request(body={'file_dir':'any_file_dir'})
+    sut.handle(request=request)
+    import_words_business.import_words.assert_called_once_with(expected)
