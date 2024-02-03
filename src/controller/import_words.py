@@ -26,5 +26,8 @@ class ImportWordsController(module_base_controller.BaseController):
             for field in self.required_fields['headers']:
                 if request.headers[field] == None or request.headers[field] == '':
                     return module_helper_response.any_required_fields_empty_response()
-        self.adapter.adapt(request=request)
+        try:
+            import_word_request = self.adapter.adapt(request=request)
+        except:
+            return module_helper_response.generic_error_response()
         return None

@@ -22,3 +22,10 @@ def any_required_fields_empty_response() -> module_response.Response:
         , message=module_constant.DEFAULT_MESSAGE_RESPONSE_SOME_REQUIRED_FIELDS_EMPTY
         , data=None
     )
+
+def generic_error_response() -> module_response.Response:
+    return module_response.Response(
+        success=False
+        , message=module_constant.DEFAULT_MESSAGE_RESPONSE_GENERIC_ERROR
+        , data=None
+    )
