@@ -6,6 +6,7 @@ import src.entities.model.controller.import_words as module_model_import_words
 import src.entities.adapter.import_words as module_adapter_import_words
 import src.usecase.import_words as module_usecase_import_words
 import src.util.helper.response as module_helper_response
+import src.entities.exception.app as module_model_exception
 
 class SutTypes:
     def __init__(self, sut:module_controller_import_words.ImportWordsController, adapter:module_adapter_import_words.ImportWordsAdapter):
@@ -74,3 +75,14 @@ class TestImportWordController(module_unittest.TestCase):
         request = module_request.Request(body={'file_dir':'any_file_dir'})
         response = sut.handle(request=request)
         assert response == module_helper_response.generic_error_response()
+
+    def test_handle_app_exception_when_import_word_usecase_throws(self):
+        adapter = module_unittest_mock.MagicMock()
+        usecase = module_unittest_mock.MagicMock()
+        adapter.return_value.adapt.return_value = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
+        usecase.import_words.side_effect = module_model_exception.AppException('Any app exception')
+        sut_types = get_sut_types(adapter=adapter, usecase=usecase)
+        sut = sut_types.sut
+        request = module_request.Request(body={'file_dir':'any_file_dir'})
+        response = sut.handle(request=request)
+        assert response == module_helper_response.app_error_response('Any app exception')
