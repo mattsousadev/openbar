@@ -1,5 +1,5 @@
 import src.controller.base as module_base_controller
-
+import src.entities.exception.app as module_model_exception
 import src.entities.model.http.request as module_request
 import src.entities.model.http.response as module_response
 import src.util.helper.response as module_helper_response
@@ -35,5 +35,7 @@ class ImportWordsController(module_base_controller.BaseController):
             import_word_request = self.adapter.adapt(request=request)
             response = self.usecase.import_words(import_word_request)
             return response
+        except module_model_exception.AppException as e:
+            return module_helper_response.app_error_response(e.message)
         except:
             return module_helper_response.generic_error_response()

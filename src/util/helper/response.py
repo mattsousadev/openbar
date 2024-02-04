@@ -29,3 +29,11 @@ def generic_error_response() -> module_response.Response:
         , message=module_constant.DEFAULT_MESSAGE_RESPONSE_GENERIC_ERROR
         , data=None
     )
+
+def app_error_response(message:str) -> module_response.Response:
+    return_message = module_constant.DEFAULT_MESSAGE_RESPONSE_APP_ERROR.format(message)
+    return module_response.Response(
+        success=False
+        , message=return_message
+        , data=None
+    )
