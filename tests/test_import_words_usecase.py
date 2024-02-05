@@ -5,6 +5,8 @@ import src.entities.model.controller.import_words as module_model_import_words
 import src.entities.exception.app as module_model_exception
 import src.util.constant as module_constant
 
+# TODO: Add sut types
+
 class TestImportWordUsecase(module_unittest.TestCase):
     def test_check_file_service_is_beign_called(self):
         file_service = module_unittest_mock.MagicMock()

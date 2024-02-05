@@ -20,6 +20,7 @@ class ImportWordsController(module_base_controller.BaseController):
         }
     
     def handle(self, request: module_request.Request) -> module_response.Response:
+        # TODO: Create a validator class to handle this
         if request == None:
             return module_helper_response.null_request_response()
         if not request.body and not request.headers:

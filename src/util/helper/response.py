@@ -2,6 +2,8 @@ import src.entities.model.http.response as module_response
 
 import src.util.constant as module_constant
 
+# TODO: Create a factory class for response
+
 def null_request_response() -> module_response.Response:
     return module_response.Response(
         success=False
