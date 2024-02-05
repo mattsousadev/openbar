@@ -14,7 +14,9 @@ class ImportWordsUsecase:
         if not self.file_service.exists(file_dir):
             # TODO: create custom exception
             raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_DIRECTORY_NOT_FOUND)
-        self.file_service.move_to_processing(file_dir)
+        file_paths = self.file_service.move_to_processing(file_dir)
+        if len(file_paths) == 0:
+            raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED)
         # TODO: for each file
         # TODO: read file
         # TODO: persist words
