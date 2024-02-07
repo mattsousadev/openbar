@@ -17,10 +17,14 @@ class ImportWordsUsecase:
         file_paths = self.file_service.move_to_processing(file_dir)
         if len(file_paths) == 0:
             raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED)
-        # TODO: for each file
-        # TODO: read file
-        # TODO: persist words
-        # TODO: move file to processed
+        try:    
+            for file_path in file_paths:
+                # TODO: read file
+                table_words = self.file_service.read_words_file(file_path)
+                # TODO: persist words
+                # TODO: move file to processed
+        except:
+            raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_ERROR_READING_WORDS_FILE)
         # TODO: encode file to base64
         # TODO: persist base64 file
         # TODO: return response

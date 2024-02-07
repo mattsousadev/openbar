@@ -1,0 +1,2 @@
+class TableWords:
+    pass
