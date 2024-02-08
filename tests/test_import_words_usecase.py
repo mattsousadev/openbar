@@ -90,3 +90,16 @@ class TestImportWordUsecase(module_unittest.TestCase):
         with self.assertRaises(module_model_exception.AppException) as context:
             sut.import_words(request)
         context.exception.message == module_constant.DEFAULT_EXCEPTION_ERROR_PERSISTING_WORDS
+
+    def test_throw_app_error_when_moving_files_to_processed(self):
+        file_service = module_unittest_mock.MagicMock()
+        word_service = module_unittest_mock.MagicMock()
+        file_service.move_to_processing.return_value = ['any_file1', 'any_file2']
+        file_service.read_words_file.return_value = module_table_words.TableWords(table=[('any_word','any_description')])
+        file_service.move_to_processed.side_effect = Exception('any_error')
+        sut_types = get_sut_types(file_service=file_service, word_service=word_service)
+        sut = sut_types.sut
+        request = module_model_import_words.ImportWordsRequest(file_dir="any_file_dir")
+        with self.assertRaises(module_model_exception.AppException) as context:
+            sut.import_words(request)
+        context.exception.message == module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED
