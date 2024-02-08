@@ -4,6 +4,9 @@ import src.entities.table.words as module_table_words
 class FileService:
     def move_to_processing(self, file_dir:str) -> None:
         pass
+
+    def move_to_processed(self, files_path:list[str]) -> None:
+        pass
     
     def exists(self, path) -> bool:
         pass
