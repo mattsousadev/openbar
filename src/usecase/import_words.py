@@ -34,7 +34,7 @@ class ImportWordsUsecase:
                 raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_ERROR_PERSISTING_WORDS)
             
         try:
-            self.file_service.move_to_processed(table_words.items())
+            self.file_service.move_to_processed(file_paths)
         except:
             raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED)
 
