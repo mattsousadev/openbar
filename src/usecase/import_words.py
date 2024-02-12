@@ -32,13 +32,18 @@ class ImportWordsUsecase:
                     self.word_service.persist_words(row)
             except:
                 raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_ERROR_PERSISTING_WORDS)
+
+            try:
+                base64_file = self.file_service.encode_to_base64(file_path, module_constant.DEFAULT_FILES_ENCODING)
+            except:
+                raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_ERROR_ENCODING_BASE_64)
+
+            # TODO: persist base64 file
             
         try:
             self.file_service.move_to_processed(file_paths)
         except:
             raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED)
 
-        # TODO: encode file to base64
-        # TODO: persist base64 file
         # TODO: return response
         pass

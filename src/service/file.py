@@ -13,3 +13,6 @@ class FileService:
 
     def read_words_file(self, file_path: str) -> module_table_words.TableWords:
         pass
+
+    def encode_to_base64(self, file_path:str) -> str:
+        pass
