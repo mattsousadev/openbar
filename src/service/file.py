@@ -14,5 +14,8 @@ class FileService:
     def read_words_file(self, file_path: str) -> module_table_words.TableWords:
         pass
 
+    def persist_file(self, base64_file:str, file_path:str):
+        pass
+
     def encode_to_base64(self, file_path:str) -> str:
         pass
