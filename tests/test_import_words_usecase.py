@@ -116,3 +116,18 @@ class TestImportWordUsecase(module_unittest.TestCase):
         with self.assertRaises(module_model_exception.AppException) as context:
             sut.import_words(request)
         assert context.exception.message == module_constant.DEFAULT_EXCEPTION_ERROR_ENCODING_BASE_64
+    
+    def test_throw_app_error_when_could_not_persist_file(self):
+        file_service = module_unittest_mock.MagicMock()
+        word_service = module_unittest_mock.MagicMock()
+        file_service.move_to_processing.return_value = ['any_file1', 'any_file2']
+        file_service.read_words_file.return_value = module_table_words.TableWords(table=[('any_word','any_description')])
+        file_service.move_to_processed.return_value = ['any_file1', 'any_file2']
+        file_service.encode_to_base64.return_value = 'any_base_64'
+        file_service.persist_file.side_effect = Exception('any_error')
+        sut_types = get_sut_types(file_service=file_service, word_service=word_service)
+        sut = sut_types.sut
+        request = module_model_import_words.ImportWordsRequest(file_dir="any_file_dir")
+        with self.assertRaises(module_model_exception.AppException) as context:
+            sut.import_words(request)
+        assert context.exception.message == module_constant.DEFAULT_EXCEPTION_ERROR_PERSISTING_FILE
