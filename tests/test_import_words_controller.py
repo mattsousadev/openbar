@@ -2,7 +2,7 @@ import unittest as module_unittest
 import unittest.mock as module_unittest_mock
 import src.controller.import_words as module_controller_import_words
 import src.entities.model.http.request as module_request
-import src.entities.model.controller.import_words as module_model_import_words
+import src.entities.model.controller.import_words as module_model_controller_import_words
 import src.entities.adapter.import_words as module_adapter_import_words
 import src.usecase.import_words as module_usecase_import_words
 import src.util.helper.response as module_helper_response
@@ -60,7 +60,7 @@ class TestImportWordController(module_unittest.TestCase):
         import_words_usecase = module_unittest_mock.MagicMock()
         sut_types = get_sut_types(usecase=import_words_usecase)
         sut = sut_types.sut
-        expected = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
+        expected = module_model_controller_import_words.ImportWordsRequest(file_dir='any_file_dir')
         request = module_request.Request(body={'file_dir':'any_file_dir'})
         sut.handle(request=request)
         import_words_usecase.import_words.assert_called_once_with(expected)
@@ -68,7 +68,7 @@ class TestImportWordController(module_unittest.TestCase):
     def test_handle_exception_when_import_word_usecase_throws(self):
         adapter = module_unittest_mock.MagicMock()
         usecase = module_unittest_mock.MagicMock()
-        adapter.return_value.adapt.return_value = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
+        adapter.return_value.adapt.return_value = module_model_controller_import_words.ImportWordsRequest(file_dir='any_file_dir')
         usecase.import_words.side_effect = Exception('any_error')
         sut_types = get_sut_types(adapter=adapter, usecase=usecase)
         sut = sut_types.sut
@@ -79,7 +79,7 @@ class TestImportWordController(module_unittest.TestCase):
     def test_handle_app_exception_when_import_word_usecase_throws(self):
         adapter = module_unittest_mock.MagicMock()
         usecase = module_unittest_mock.MagicMock()
-        adapter.return_value.adapt.return_value = module_model_import_words.ImportWordsRequest(file_dir='any_file_dir')
+        adapter.return_value.adapt.return_value = module_model_controller_import_words.ImportWordsRequest(file_dir='any_file_dir')
         usecase.import_words.side_effect = module_model_exception.AppException('Any app exception')
         sut_types = get_sut_types(adapter=adapter, usecase=usecase)
         sut = sut_types.sut
