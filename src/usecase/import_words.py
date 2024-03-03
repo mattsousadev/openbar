@@ -1,5 +1,6 @@
 import src.service.file as module_service_file
-import src.entities.model.controller.import_words as module_model_import_words
+import src.entities.model.controller.import_words as module_model_controller_import_words
+import src.entities.model.usecase.import_words as module_model_usecase_import_words
 import src.entities.exception.app as module_model_exception
 import src.service.word as module_service_word
 import src.util.constant as module_constant
@@ -11,7 +12,8 @@ class ImportWordsUsecase:
         self.file_service = file_service
         self.word_service = word_service
 
-    def import_words(self, request: module_model_import_words.ImportWordsRequest) -> module_model_import_words.ImportWordsResponse:
+    def import_words(self, request: module_model_controller_import_words.ImportWordsRequest) -> module_model_controller_import_words.ImportWordsResponse:
+        imported_words = 0
         file_dir = request.file_dir
         if not self.file_service.exists(file_dir):
             # TODO: create custom exception
@@ -39,7 +41,7 @@ class ImportWordsUsecase:
             
             try:
                 for row in table_words.items():
-                    self.word_service.persist_words(row)
+                    imported_words += self.word_service.persist_words(row)
             except:
                 raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_ERROR_PERSISTING_WORDS)
             
@@ -49,4 +51,4 @@ class ImportWordsUsecase:
             raise module_model_exception.AppException(module_constant.DEFAULT_EXCEPTION_NO_FILE_MOVED)
 
         # TODO: return response
-        pass
+        return module_model_usecase_import_words.ImportWordsResponse(imported_words)
