@@ -2,7 +2,6 @@ import unittest as module_unittest
 import unittest.mock as module_unittest_mock
 import src.usecase.import_words as module_usecase_import_words
 import src.entities.model.controller.import_words as module_model_controller_import_words
-import src.entities.model.usecase.import_words as module_model_usecase_import_words
 import src.service.file as module_service_file
 import src.service.word as module_service_word
 import src.entities.exception.app as module_model_exception
@@ -143,7 +142,11 @@ class TestImportWordUsecase(module_unittest.TestCase):
     def test_import_word_success(self):
         sut_types = get_sut_types()
         sut = sut_types.sut
-        expected = module_model_usecase_import_words.ImportWordsResponse(words_imported=2)
+        expected = module_model_controller_import_words.ImportWordsResponse(
+            file_list=['processing/moved_file'],
+            words_imported=2,
+            description_imported=2
+        )
         request = module_model_controller_import_words.ImportWordsRequest(file_dir="any_file_dir")
         response = sut.import_words(request)
         assert expected == response

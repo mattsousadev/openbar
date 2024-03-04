@@ -3,7 +3,7 @@ class ImportWordsRequest(module_helper_interface.EqualAttributes):
     def __init__(self, file_dir:str):
         self.file_dir = file_dir
 
-class ImportWordsResponse():
+class ImportWordsResponse(module_helper_interface.EqualAttributes):
     def __init__(self, file_list:list[str], words_imported: int, description_imported: int):
         self.file_list = file_list
         self.words_imported = words_imported
