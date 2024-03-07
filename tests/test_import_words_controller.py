@@ -4,9 +4,11 @@ import src.controller.import_words as module_controller_import_words
 import src.entities.model.http.request as module_request
 import src.entities.model.controller.import_words as module_model_controller_import_words
 import src.entities.adapter.import_words as module_adapter_import_words
-import src.usecase.import_words as module_usecase_import_words
+import src.entities.model.usecase.import_words as module_model_usecase_import_words
 import src.util.helper.response as module_helper_response
 import src.entities.exception.app as module_model_exception
+
+import tests.stubs.controller.import_words as module_stubs_import_words
 
 class SutTypes:
     def __init__(self, sut:module_controller_import_words.ImportWordsController, adapter:module_adapter_import_words.ImportWordsAdapter):
@@ -15,7 +17,7 @@ class SutTypes:
 
 def get_sut_types(
         adapter:module_adapter_import_words.ImportWordsAdapter=module_adapter_import_words.ImportWordsAdapter(),
-        usecase=module_usecase_import_words.ImportWordsUsecase
+        usecase:module_model_usecase_import_words.ImportWordsUsecaseBase=module_stubs_import_words.ImportWordsUsecaseStub()
     ):
     sut = module_controller_import_words.ImportWordsController(adapter=adapter,usecase=usecase)
     return SutTypes(sut=sut, adapter=adapter)
@@ -86,3 +88,14 @@ class TestImportWordController(module_unittest.TestCase):
         request = module_request.Request(body={'file_dir':'any_file_dir'})
         response = sut.handle(request=request)
         assert response == module_helper_response.app_error_response('Any app exception')
+    
+    def test_return_success(self):
+        sut_types = get_sut_types()
+        sut = sut_types.sut
+        request = module_request.Request(body={'file_dir':'any_file_dir'})
+        response = sut.handle(request=request)
+        assert response == module_helper_response.ok_response({
+            'file_list': ['any_file_dir'],
+            'description_imported': 2,
+            'words_imported':2
+        })
