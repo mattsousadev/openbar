@@ -3,9 +3,10 @@ import src.entities.model.controller.import_words as module_model_controller_imp
 import src.entities.exception.app as module_model_exception
 import src.service.word as module_service_word
 import src.util.constant as module_constant
+import src.entities.model.usecase.import_words as module_model_usecase_import_words
 
 # TODO: Create base class for usecase
-class ImportWordsUsecase:
+class ImportWordsUsecase (module_model_usecase_import_words.ImportWordsUsecaseBase):
 
     def __init__(self, file_service:module_service_file.FileService, word_service:module_service_word.WordService) -> None:
         self.file_service = file_service

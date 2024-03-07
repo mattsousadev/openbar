@@ -34,7 +34,8 @@ class ImportWordsController(module_base_controller.BaseController):
                     return module_helper_response.any_required_fields_empty_response()
         try:
             import_word_request = self.adapter.adapt(request=request)
-            response = self.usecase.import_words(import_word_request)
+            usecase_response = self.usecase.import_words(import_word_request)
+            response = module_helper_response.ok_response(usecase_response.__dict__)
             return response
         except module_model_exception.AppException as e:
             return module_helper_response.app_error_response(e.message)

@@ -39,3 +39,10 @@ def app_error_response(message:str) -> module_response.Response:
         , message=return_message
         , data=None
     )
+
+def ok_response(data: dict, message:str="") -> module_response.Response:
+    return module_response.Response(
+        success=True
+        , message=message
+        , data=data
+    )
